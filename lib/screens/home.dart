@@ -144,46 +144,50 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () {},
-                              borderRadius: BorderRadius.circular(1000),
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(minHeight: 30),
-                                height: height * 0.045,
-                                width: width * 0.35,
-                                decoration: BoxDecoration(
-                                    color: MyColors().secondary,
-                                    borderRadius: BorderRadius.circular(1000)),
-                                child: Center(
-                                  child: Text(
-                                    'Send',
-                                    style: TextStyle(
-                                        color: MyColors().white_,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w300),
+                            Container(
+                              constraints: const BoxConstraints(minHeight: 30),
+                              height: height * 0.045,
+                              width: width * 0.35,
+                              decoration: BoxDecoration(
+                                  color: MyColors().secondary,
+                                  borderRadius: BorderRadius.circular(1000)),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {},
+                                  borderRadius: BorderRadius.circular(1000),
+                                  child: Center(
+                                    child: Text(
+                                      'Send',
+                                      style: TextStyle(
+                                          color: MyColors().white_,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w300),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {},
-                              borderRadius: BorderRadius.circular(1000),
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(minHeight: 30),
-                                height: height * 0.045,
-                                width: width * 0.35,
-                                decoration: BoxDecoration(
-                                    color: MyColors().secondary,
-                                    borderRadius: BorderRadius.circular(1000)),
-                                child: Center(
-                                  child: Text(
-                                    'Receive',
-                                    style: TextStyle(
-                                        color: MyColors().white_,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w300),
+                            Container(
+                              constraints: const BoxConstraints(minHeight: 30),
+                              height: height * 0.045,
+                              width: width * 0.35,
+                              decoration: BoxDecoration(
+                                  color: MyColors().secondary,
+                                  borderRadius: BorderRadius.circular(1000)),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {},
+                                  borderRadius: BorderRadius.circular(1000),
+                                  child: Center(
+                                    child: Text(
+                                      'Receive',
+                                      style: TextStyle(
+                                          color: MyColors().white_,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w300),
+                                    ),
                                   ),
                                 ),
                               ),

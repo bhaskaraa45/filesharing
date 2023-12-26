@@ -20,52 +20,58 @@ class Boxes extends StatelessWidget {
 
   Widget oneBox(Color bgColor, Color color, IconData icon, String title,
       VoidCallback onTap, Size size) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-          height: size.width * 0.17,
-          width: (size.width - 74) / 2,
-          decoration: BoxDecoration(
-              color: bgColor, borderRadius: BorderRadius.circular(12)),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: size.width * 0.03,
-              ),
-              Container(
-                  height: size.width * 0.13,
-                  width: size.width * 0.13,
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 4,
-                      offset: const Offset(0, 4),
-                    ),
-                  ], color: color, borderRadius: BorderRadius.circular(100000)),
-                  child: Icon(
-                    icon,
-                    color: MyColors().white_,
-                    size: size.width * 0.1,
-                  )),
-              SizedBox(
-                width: size.width * 0.02,
-              ),
-              Expanded(
-                child: Text(
-                  title,
-                  maxLines: 1,
-                  style: TextStyle(
-                      fontSize: size.width * 0.05,
-                      color: color,
-                      fontWeight: FontWeight.w500),
+    return Container(
+        height: size.width * 0.17,
+        width: (size.width - 74) / 2,
+        decoration: BoxDecoration(
+            color: bgColor, borderRadius: BorderRadius.circular(12)),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: size.width * 0.03,
                 ),
-              )
-            ],
-          )),
-    );
+                Container(
+                    height: size.width * 0.13,
+                    width: size.width * 0.13,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                        color: color,
+                        borderRadius: BorderRadius.circular(100000)),
+                    child: Icon(
+                      icon,
+                      color: MyColors().white_,
+                      size: size.width * 0.1,
+                    )),
+                SizedBox(
+                  width: size.width * 0.02,
+                ),
+                Expanded(
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: size.width * 0.05,
+                        color: color,
+                        fontWeight: FontWeight.w500),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget twoBoxes(int i, Size size) {
