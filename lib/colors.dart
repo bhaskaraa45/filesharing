@@ -13,4 +13,5 @@ class MyColors {
   final Color box2MainColor = const Color(0xff38BBFA);
   final Color box3MainColor = const Color(0xff198F8D);
   final Color box4MainColor = const Color(0xffF08311);
+  final Color footerBox = const Color(0xffF5D6E6);
 }

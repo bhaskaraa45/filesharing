@@ -36,6 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
     print('Hello World!');
   }
 
+  Color hyperlinkColor = const Color(0xff0000EE);
+  bool isLinkHover = false;
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -201,6 +204,94 @@ class _HomeScreenState extends State<HomeScreen> {
                     functionList: [func, func, func, func],
                     icons: icons,
                     titles: titles),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(8, 32, 8, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: MyColors().footerBox,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 12, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: width - 130 - 88 - 5,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Web Share',
+                                style: TextStyle(
+                                  color: MyColors().primary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                'Now Easy ways to share files with browser',
+                                style: TextStyle(
+                                  color: MyColors().textColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              MouseRegion(
+                                onEnter: (_) {
+                                  // Change text color on hover
+                                  // You can set a different color here
+                                  // based on your design preferences
+                                  // For example, Colors.blue
+                                  setState(() {
+                                    // textColor = Colors
+                                    // Define textColor in your state
+                                    isLinkHover = true;
+                                  });
+                                },
+                                onExit: (_) {
+                                  // Reset text color when not hovering
+                                  setState(() {
+                                    // Reset to the original color
+                                    isLinkHover = false;
+                                  });
+                                },
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Text(
+                                    'Click here',
+                                    style: TextStyle(
+                                      color: const Color(0xff0000EE),
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w300,
+                                      decoration: isLinkHover
+                                          ? TextDecoration.underline
+                                          : null,
+                                      decorationColor: const Color(0xff0000EE),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 130,
+                          child: Image.asset('assets/icons/web.png'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
               )
             ],
           ),
