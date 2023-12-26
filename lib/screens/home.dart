@@ -1,16 +1,40 @@
 import 'package:filesharing/colors.dart';
+import 'package:filesharing/widgets/boxes_widget.dart';
 import 'package:filesharing/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-  // Widget boxes(){
-  //   return
-  // }
+class _HomeScreenState extends State<HomeScreen> {
+  List<Color> bgColors = [
+    MyColors().box1,
+    MyColors().box2,
+    MyColors().box3,
+    MyColors().box4,
+  ];
+  List<Color> colors = [
+    MyColors().box1MainColor,
+    MyColors().box2MainColor,
+    MyColors().box3MainColor,
+    MyColors().box4MainColor,
+  ];
+  List<IconData> icons = [
+    Icons.play_arrow,
+    Icons.play_arrow,
+    Icons.play_arrow,
+    Icons.play_arrow,
+  ];
+  List<String> titles = ['Videos', 'Music', "Images", 'Files'];
 
+  void func() {
+    print('Hello World!');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +86,12 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.fromLTRB(8, 32, 0, 0),
+                margin: const EdgeInsets.fromLTRB(8, 32, 8, 0),
                 child: RichText(
                     text: TextSpan(
                         text: "Hello\n",
-                        style:
-                            TextStyle(fontSize: 28, color: MyColors().textColor),
+                        style: TextStyle(
+                            fontSize: 28, color: MyColors().textColor),
                         children: <TextSpan>[
                       TextSpan(
                         text: "Bhaskar Mandal",
@@ -79,10 +103,8 @@ class HomeScreen extends StatelessWidget {
                     ])),
               ),
               Container(
-                constraints: const  BoxConstraints(
-                  minHeight: 160
-                ),
-                margin: const EdgeInsets.fromLTRB(8, 32, 0, 0),
+                constraints: const BoxConstraints(minHeight: 160),
+                margin: const EdgeInsets.fromLTRB(8, 32, 8, 0),
                 height: height * 0.25,
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -104,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                               fontWeight: FontWeight.w400),
                         ),
                         SizedBox(
-                          height: height*0.01,
+                          height: height * 0.01,
                         ),
                         Text(
                           'Transfer file with friends in quick ways',
@@ -114,18 +136,17 @@ class HomeScreen extends StatelessWidget {
                               fontWeight: FontWeight.w300),
                         ),
                         SizedBox(
-                          height: height*0.06,
+                          height: height * 0.06,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               borderRadius: BorderRadius.circular(1000),
                               child: Container(
-                                constraints: const BoxConstraints(
-                                  minHeight: 30
-                                ),
+                                constraints:
+                                    const BoxConstraints(minHeight: 30),
                                 height: height * 0.045,
                                 width: width * 0.35,
                                 decoration: BoxDecoration(
@@ -143,12 +164,11 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               borderRadius: BorderRadius.circular(1000),
                               child: Container(
-                                constraints: const BoxConstraints(
-                                  minHeight: 30
-                                ),
+                                constraints:
+                                    const BoxConstraints(minHeight: 30),
                                 height: height * 0.045,
                                 width: width * 0.35,
                                 decoration: BoxDecoration(
@@ -167,13 +187,20 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-
-
-
                       ],
                     ),
                   ),
                 ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(8, 32, 8, 0),
+                child: Boxes(
+                    bgColors: bgColors,
+                    colors: colors,
+                    count: 4,
+                    functionList: [func, func, func, func],
+                    icons: icons,
+                    titles: titles),
               )
             ],
           ),
