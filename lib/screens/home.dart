@@ -3,6 +3,8 @@
 import 'dart:io';
 import 'package:filesharing/serivce/web_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import "package:universal_html/html.dart" as html;
+import 'dart:async';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:filesharing/colors.dart';
@@ -23,14 +25,36 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isFileSelected = false;
   List<File> selectedFiles = [];
+  List<html.File> selectedFilesWeb = [];
 
   WebPicker webPicker = WebPicker();
 
-  pickMultipleFiles() async {
+  Future<void> pickMultipleFiles() async {
     Permission.storage.request();
 
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+      setState(() {
+        selectedFiles = files;
+        isFileSelected = true;
+      });
+      print(files);
+    } else {
+      // User canceled the picker
+      setState(() {
+        selectedFiles = [];
+        isFileSelected = false;
+      });
+    }
+  }
+
+  Future<void> pickMultipleFilesWithSpecificType(FileType type) async {
+    Permission.storage.request();
+
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true, type: type);
     if (result != null) {
       List<File> files = result.paths.map((path) => File(path!)).toList();
       setState(() {
@@ -67,14 +91,61 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List<String> titles = ['Videos', 'Music', "Images", 'Files'];
 
+  Future<void> pickVideos() async {
+    // print('Hello World!');
+    if (kIsWeb) {
+      List<html.File> files = await webPicker.pickVideos();
+      setState(() {
+        selectedFilesWeb = files;
+      });
+    } else {
+      await pickMultipleFilesWithSpecificType(FileType.video);
+    }
+  }
+
+  Future<void> pickMusic() async {
+    if (kIsWeb) {
+      List<html.File> files = await webPicker.pickMusic();
+      setState(() {
+        selectedFilesWeb = files;
+      });
+    } else {
+      await pickMultipleFilesWithSpecificType(FileType.audio);
+    }
+  }
+
+  Future<void> pickImages() async {
+    if (kIsWeb) {
+      List<html.File> files = await webPicker.pickImages();
+      setState(() {
+        selectedFilesWeb = files;
+      });
+    } else {
+      await pickMultipleFilesWithSpecificType(FileType.image);
+    }
+  }
+
+  Future<void> pickFiles() async {
+    if (kIsWeb) {
+      List<html.File> files = await webPicker.pickFiles();
+      setState(() {
+        selectedFilesWeb = files;
+      });
+    } else {
+      await pickMultipleFiles();
+    }
+  }
+
   void func() {
-    print('Hello World!');
+    print('Hello Web');
   }
 
   bool isLinkHover = false;
+  bool isLinkClicked = false;
 
   openBrowser() async {
     //TODO:fix this
+
     // if (await canLaunchUrlString('http://localhost:8888')) {
     launchUrlString('http://localhost:8888');
     // } else {
@@ -197,15 +268,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  onTap: () {
-                                    if (kIsWeb) {
-                                      print('WEB');
-                                      WebPicker().pickFiles();
-                                    } else {
-                                      print('NOT WEB');
-                                      pickMultipleFiles();
-                                    }
-                                  },
+                                  onTap: pickFiles,
+                                  // if (kIsWeb) {
+                                  //   print('WEB');
+                                  //   List<html.File> files =
+                                  //       await WebPicker().pickFiles();
+                                  //   setState(() {
+                                  //     selectedFilesWeb = files;
+                                  //   });
+                                  // } else {
+                                  //   print('NOT WEB');
+                                  //   pickMultipleFiles();
+                                  // }
+
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
                                     child: Text(
@@ -256,7 +331,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     bgColors: bgColors,
                     colors: colors,
                     count: 4,
-                    functionList: [func, func, func, func],
+                    functionList: [
+                      pickVideos,
+                      pickMusic,
+                      pickImages,
+                      pickFiles,
+                    ],
                     icons: icons,
                     titles: titles),
               ),
@@ -298,38 +378,37 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(height: 10),
                               MouseRegion(
                                 onEnter: (_) {
-                                  // Change text color on hover
-                                  // You can set a different color here
-                                  // based on your design preferences
-                                  // For example, Colors.blue
                                   setState(() {
-                                    // textColor = Colors
-                                    // Define textColor in your state
                                     isLinkHover = true;
                                   });
                                 },
                                 onExit: (_) {
-                                  // Reset text color when not hovering
                                   setState(() {
-                                    // Reset to the original color
                                     isLinkHover = false;
                                   });
                                 },
                                 child: InkWell(
                                   onTap: () {
                                     openBrowser();
+                                    setState(() {
+                                      isLinkClicked = true;
+                                    });
                                   },
                                   child: Text(
                                     'Click here',
                                     style: TextStyle(
-                                      color: const Color(0xff0000EE),
+                                      color: isLinkClicked
+                                          ? const Color(0xff551A8B)
+                                          : const Color(0xff0000EE),
                                       fontSize: 16,
                                       fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w300,
+                                      fontWeight: FontWeight.w400,
                                       decoration: isLinkHover
                                           ? TextDecoration.underline
                                           : null,
-                                      decorationColor: const Color(0xff0000EE),
+                                      decorationColor: isLinkClicked
+                                          ? const Color(0xff551A8B)
+                                          : const Color(0xff0000EE),
                                     ),
                                   ),
                                 ),
