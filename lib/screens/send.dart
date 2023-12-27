@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:filesharing/colors.dart';
+import 'package:filesharing/screens/qr_gen.dart';
+import 'package:filesharing/server/wifi_info.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:path/path.dart';
@@ -16,14 +18,23 @@ class SendScreen extends StatefulWidget {
 
 class _SendScreenState extends State<SendScreen> {
   String fileLength = '0 B';
+  String ipAddress = 'localhost';
 
   @override
   void initState() {
     super.initState();
     getLength(widget.file);
+    getIp();
   }
 
-  Widget sendButton(Size size) {
+  getIp() async {
+    String iPv4 = await WifiInfo().getIpV4Address();
+    setState(() {
+      ipAddress = iPv4;
+    });
+  }
+
+  Widget sendButton(Size size, BuildContext context) {
     return Container(
       width: size.width * 0.4 > 280 ? 280 : size.width * 0.4,
       // height: size.width*0.15 ,
@@ -33,7 +44,18 @@ class _SendScreenState extends State<SendScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+            showModalBottomSheet(
+              enableDrag: false,
+              isDismissible: false,
+                context: context,
+                builder: (context) {
+                  return QrGenerate(
+                    ipAddress: ipAddress,
+                  );
+                });
+          },
           borderRadius: BorderRadius.circular(12),
           child: Center(
             child: Text(
@@ -94,7 +116,7 @@ class _SendScreenState extends State<SendScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           cancelButton(size, context),
-          sendButton(size),
+          sendButton(size, context),
         ],
       ),
       const SizedBox(

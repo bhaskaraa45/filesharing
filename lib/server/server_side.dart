@@ -16,7 +16,7 @@ class ServerSide {
   void handleRequest(HttpRequest request, String filePath) {
     try {
       if (request.method == 'GET') {
-        if (request.uri.path == '/getFiles') {
+        if (request.uri.path == '/getFile') {
           serveFile(request, filePath);
         } else {
           // Handle other types of requests as needed
