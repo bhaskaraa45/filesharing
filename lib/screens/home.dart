@@ -32,11 +32,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   WebPicker webPicker = WebPicker();
 
-  Future<void> pickMultipleFiles() async {
-    // Permission.storage.request();
 
+Future<void> pickMultipleFiles(BuildContext context) async {
+  // Show circular progress indicator while waiting for file picker result
+  showDialog(
+    context: context,
+    builder: (context) => Center(
+      child: CircularProgressIndicator(),
+    ),
+    barrierDismissible: false, // Prevent users from dismissing the dialog
+  );
+
+  try {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: false);
+
     if (result != null) {
       File file = File(result.files.single.path!);
       setState(() {
@@ -51,9 +61,15 @@ class _HomeScreenState extends State<HomeScreen> {
         isFileSelected = false;
       });
     }
-
-    showSendModal();
+  } finally {
+    // Close the progress indicator dialog
+    Navigator.of(context).pop();
   }
+
+  // Continue with the rest of your logic
+  showSendModal();
+}
+
 
   showSendModal() {
     if (isFileSelected) {
@@ -159,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedFilesWeb = files;
       });
     } else {
-      await pickMultipleFiles();
+      await pickMultipleFiles(context);
     }
   }
 

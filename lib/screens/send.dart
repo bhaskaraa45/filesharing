@@ -33,9 +33,7 @@ class _SendScreenState extends State<SendScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-
-          },
+          onTap: () {},
           borderRadius: BorderRadius.circular(12),
           child: Center(
             child: Text(
@@ -51,7 +49,7 @@ class _SendScreenState extends State<SendScreen> {
     );
   }
 
-  Widget cancelButton(Size size,BuildContext context) {
+  Widget cancelButton(Size size, BuildContext context) {
     return Container(
       width: size.width * 0.4 > 280 ? 280 : size.width * 0.4,
       height: size.width * 0.15 > 80 ? 80 : size.width * 0.15,
@@ -94,9 +92,14 @@ class _SendScreenState extends State<SendScreen> {
       Expanded(child: itemCard(widget.file, size)),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [sendButton(size), cancelButton(size,context)],
+        children: [
+          cancelButton(size, context),
+          sendButton(size),
+        ],
       ),
-      const SizedBox(height: 16,),
+      const SizedBox(
+        height: 16,
+      ),
     ]);
   }
 
@@ -208,9 +211,7 @@ class _SendScreenState extends State<SendScreen> {
               Container(
                   margin: EdgeInsets.fromLTRB(
                       0,
-                      size.width * 0.07 > 60
-                          ? 60 + 12
-                          : size.width * 0.07 + 12,
+                      size.width * 0.07 > 60 ? 60 + 12 : size.width * 0.07 + 12,
                       0,
                       0),
                   child: Text(fileLength,
