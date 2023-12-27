@@ -1,8 +1,17 @@
+// ignore_for_file: avoid_web_libraries_in_flutter
+
+import 'dart:io';
+import 'package:filesharing/serivce/web_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'package:file_picker/file_picker.dart';
 import 'package:filesharing/colors.dart';
 import 'package:filesharing/widgets/boxes_widget.dart';
 import 'package:filesharing/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +21,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isFileSelected = false;
+  List<File> selectedFiles = [];
+
+  WebPicker webPicker = WebPicker();
+
+  pickMultipleFiles() async {
+    Permission.storage.request();
+
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+      setState(() {
+        selectedFiles = files;
+        isFileSelected = true;
+      });
+      print(files);
+    } else {
+      // User canceled the picker
+      setState(() {
+        selectedFiles = [];
+        isFileSelected = false;
+      });
+    }
+  }
+
   List<Color> bgColors = [
     MyColors().box1,
     MyColors().box2,
@@ -36,8 +71,16 @@ class _HomeScreenState extends State<HomeScreen> {
     print('Hello World!');
   }
 
-  Color hyperlinkColor = const Color(0xff0000EE);
   bool isLinkHover = false;
+
+  openBrowser() async {
+    //TODO:fix this
+    // if (await canLaunchUrlString('http://localhost:8888')) {
+    launchUrlString('http://localhost:8888');
+    // } else {
+    // print('cannot open localhost:8888');
+    // }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         toolbarHeight: 0,
         systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarColor: MyColors().primary),
+            SystemUiOverlayStyle(statusBarColor: MyColors().white_),
       ),
       backgroundColor: MyColors().white_,
       body: SafeArea(
@@ -154,7 +197,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    if (kIsWeb) {
+                                      print('WEB');
+                                      WebPicker().pickFiles();
+                                    } else {
+                                      print('NOT WEB');
+                                      pickMultipleFiles();
+                                    }
+                                  },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
                                     child: Text(
@@ -265,7 +316,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   });
                                 },
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    openBrowser();
+                                  },
                                   child: Text(
                                     'Click here',
                                     style: TextStyle(
@@ -296,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(
                 height: 30,
-              )
+              ),
             ],
           ),
         ),
