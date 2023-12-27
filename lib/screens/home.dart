@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:io';
+import 'package:filesharing/screens/send.dart';
 import 'package:filesharing/serivce/web_picker.dart';
+import 'package:filesharing/server/client_side.dart';
+import 'package:filesharing/server/server_side.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import "package:universal_html/html.dart" as html;
 import 'dart:async';
@@ -24,29 +27,45 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isFileSelected = false;
-  List<File> selectedFiles = [];
+  File? selectedFile;
   List<html.File> selectedFilesWeb = [];
 
   WebPicker webPicker = WebPicker();
 
   Future<void> pickMultipleFiles() async {
-    Permission.storage.request();
+    // Permission.storage.request();
 
     FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
+        await FilePicker.platform.pickFiles(allowMultiple: false);
     if (result != null) {
-      List<File> files = result.paths.map((path) => File(path!)).toList();
+      File file = File(result.files.single.path!);
       setState(() {
-        selectedFiles = files;
+        selectedFile = file;
         isFileSelected = true;
       });
-      print(files);
+      print(file);
     } else {
       // User canceled the picker
       setState(() {
-        selectedFiles = [];
+        selectedFile = null;
         isFileSelected = false;
       });
+    }
+
+    showSendModal();
+  }
+
+  showSendModal() {
+    if (isFileSelected) {
+      showModalBottomSheet(
+          isDismissible: false,
+          context: context,
+          builder: (context) {
+            return SendScreen(
+              width: MediaQuery.of(context).size.width,
+              file: selectedFile ?? File(''),
+            );
+          });
     }
   }
 
@@ -54,21 +73,29 @@ class _HomeScreenState extends State<HomeScreen> {
     Permission.storage.request();
 
     FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true, type: type);
+        await FilePicker.platform.pickFiles(allowMultiple: false, type: type);
     if (result != null) {
-      List<File> files = result.paths.map((path) => File(path!)).toList();
+      // List<File> files = result.paths.map((path) => File(path!)).toList();
+      // setState(() {
+      //   selectedFiles = files;
+      //   isFileSelected = true;
+      // });
+      // print(files);
+      File file = File(result.files.single.path!);
       setState(() {
-        selectedFiles = files;
+        selectedFile = file;
         isFileSelected = true;
       });
-      print(files);
+      print(file);
     } else {
       // User canceled the picker
       setState(() {
-        selectedFiles = [];
+        selectedFile = null;
         isFileSelected = false;
       });
     }
+
+    showSendModal();
   }
 
   List<Color> bgColors = [
@@ -151,6 +178,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // } else {
     // print('cannot open localhost:8888');
     // }
+  }
+
+  Widget showImage() {
+    return Image.file(File(
+        '/data/user/0/com.aa45.filesharing.filesharing/app_flutter/celluloid-shot0003.jpg'));
   }
 
   @override
@@ -268,7 +300,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  onTap: pickFiles,
+                                  onTap: () {
+                                    // ServerSide().hostServer(
+                                    //   '/data/user/0/com.aa45.filesharing.filesharing/app_flutter/celluloid-shot0003.jpg'
+                                    //   // '/home/bhaskar/Desktop/harry-potter/Harry Potter and the Sorcerer\'s Stone (2001) Ult. Extended 1080p 10bit Bluray x265 HEVC [Org DD 2.0 Hindi + DD 5.1 English] ESub ~ TombDoc(1).mkv'
+                                    // );
+                                    pickFiles();
+                                    // isFileSelected? : null;
+                                  },
+                                  // pickFiles,
                                   // if (kIsWeb) {
                                   //   print('WEB');
                                   //   List<html.File> files =
@@ -304,7 +344,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Material(
                                 color: Colors.transparent,
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    // ClientSide().connectToServer(
+                                    //     '192.168.189.167', 8000);
+                                  },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
                                     child: Text(
@@ -429,6 +472,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 30,
               ),
+              // showImage()
             ],
           ),
         ),
