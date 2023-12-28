@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:filesharing/colors.dart';
+import 'package:filesharing/screens/after_scan.dart';
 import 'package:filesharing/widgets/overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -52,13 +53,20 @@ class _ScannerState extends State<Scanner> {
         if (regularExpressionMatch(barcode.rawValue ?? '')) {
           setState(() {
             fetchedUrl = barcode.rawValue ?? '';
+            isDetected = true;
           });
+          Navigator.pop(context);
+          showModalBottomSheet(
+              isDismissible: false,
+              enableDrag: false,
+              context: context,
+              builder: (ctx) {
+                return AfterScanSheet(
+                  url: fetchedUrl,
+                );
+              });
         }
       }
-
-      setState(() {
-        isDetected = true;
-      });
 
       // Navigator.pop(context);
     }

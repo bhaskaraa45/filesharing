@@ -47,7 +47,6 @@ dependencies:
   marquee: ^2.2.3
   qr_flutter: ^4.1.0
   network_info_plus: ^4.1.0
-  camera: ^0.10.5+7
   flutter_riverpod: ^2.4.9
   mobile_scanner: ^3.5.5
   vibration: ^1.8.4
