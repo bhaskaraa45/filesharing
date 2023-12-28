@@ -1,11 +1,14 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:io';
+import 'package:filesharing/screens/qr_scanner.dart';
+import 'package:filesharing/screens/qr_scanner.dart';
 import 'package:filesharing/screens/send.dart';
 import 'package:filesharing/serivce/web_picker.dart';
 import 'package:filesharing/server/client_side.dart';
 import 'package:filesharing/server/server_side.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import "package:universal_html/html.dart" as html;
 import 'dart:async';
 
@@ -17,59 +20,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vibration/vibration.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool isFileSelected = false;
   File? selectedFile;
   List<html.File> selectedFilesWeb = [];
 
   WebPicker webPicker = WebPicker();
 
+  Future<void> pickMultipleFiles(BuildContext context) async {
+    // Show circular progress indicator while waiting for file picker result
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      barrierDismissible: false,
+    );
 
-Future<void> pickMultipleFiles(BuildContext context) async {
-  // Show circular progress indicator while waiting for file picker result
-  showDialog(
-    context: context,
-    builder: (context) => Center(
-      child: CircularProgressIndicator(),
-    ),
-    barrierDismissible: false, // Prevent users from dismissing the dialog
-  );
+    try {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(allowMultiple: false);
 
-  try {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: false);
-
-    if (result != null) {
-      File file = File(result.files.single.path!);
-      setState(() {
-        selectedFile = file;
-        isFileSelected = true;
-      });
-      print(file);
-    } else {
-      // User canceled the picker
-      setState(() {
-        selectedFile = null;
-        isFileSelected = false;
-      });
+      if (result != null) {
+        File file = File(result.files.single.path!);
+        setState(() {
+          selectedFile = file;
+          isFileSelected = true;
+        });
+        print(file);
+      } else {
+        // User canceled the picker
+        setState(() {
+          selectedFile = null;
+          isFileSelected = false;
+        });
+      }
+    } finally {
+      // Close the progress indicator dialog
+      Navigator.of(context).pop();
     }
-  } finally {
-    // Close the progress indicator dialog
-    Navigator.of(context).pop();
+
+    // Continue with the rest of your logic
+    showSendModal();
   }
-
-  // Continue with the rest of your logic
-  showSendModal();
-}
-
 
   showSendModal() {
     if (isFileSelected) {
@@ -363,6 +365,9 @@ Future<void> pickMultipleFiles(BuildContext context) async {
                                   onTap: () {
                                     // ClientSide().connectToServer(
                                     //     '192.168.189.167', 8000);
+                                    
+
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> Scanner() ));
                                   },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
