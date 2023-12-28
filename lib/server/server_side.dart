@@ -1,14 +1,20 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+
 class ServerSide {
-  void hostServer(String filePath) async {
+  HttpServer? server; // Add a reference to the server instance
+
+  void hostServer(String filePath, int port) async {
+    await closeServer(); // Close the existing server if it exists
+
     String ipAddress = "0.0.0.0";
-    int port = 8000;
+
     // Start the server
-    HttpServer server = await HttpServer.bind(ipAddress, port, shared: true);
+    server = await HttpServer.bind(ipAddress, port, shared: true);
     print("Local server is running on http://$ipAddress:$port");
 
-    await for (HttpRequest request in server) {
+    await for (HttpRequest request in server!) {
       handleRequest(request, filePath);
     }
   }
@@ -55,6 +61,14 @@ class ServerSide {
         ..statusCode = HttpStatus.notFound
         ..write('File not found')
         ..close();
+    }
+  }
+
+  // Method to close the server
+  Future<void> closeServer() async {
+    if (server != null) {
+      await server!.close();
+      print('Server closed.');
     }
   }
 }

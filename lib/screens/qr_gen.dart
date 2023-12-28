@@ -1,18 +1,26 @@
+import 'dart:io';
+
 import 'package:filesharing/colors.dart';
+import 'package:filesharing/provider/port_provider.dart';
+import 'package:filesharing/server/server_side.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class QrGenerate extends StatefulWidget {
-  const QrGenerate({super.key, required this.ipAddress, this.port = 8080});
+class QrGenerate extends ConsumerStatefulWidget {
+  const QrGenerate({
+    super.key,
+    required this.ipAddress,
+  });
   final String ipAddress; //TODO: add null safety , (later)
-  final int port;
+  // final int port;
 
   @override
-  State<QrGenerate> createState() => _QrGenerateState();
+  ConsumerState<QrGenerate> createState() => _QrGenerateState();
 }
 
-class _QrGenerateState extends State<QrGenerate> {
-  Widget content(Size size) {
+class _QrGenerateState extends ConsumerState<QrGenerate> {
+  Widget content(Size size, int port) {
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -60,7 +68,7 @@ class _QrGenerateState extends State<QrGenerate> {
                   ),
                 ])),
             SelectableText(
-              "\nhttp://${widget.ipAddress}:${widget.port}/getFile",
+              "\nhttp://${widget.ipAddress}:$port/getFile",
               style: const TextStyle(
                 color: Colors.blue,
                 fontSize: 18,
@@ -82,7 +90,7 @@ class _QrGenerateState extends State<QrGenerate> {
     );
   }
 
-  Widget closeServer(Size size) {
+  Widget closeServer(Size size,) {
     return Container(
       width: double.infinity,
       height: size.width * 0.13 > 76 ? 76 : size.width * 0.13,
@@ -95,6 +103,9 @@ class _QrGenerateState extends State<QrGenerate> {
         child: InkWell(
           onTap: () {
             //TODO:close server
+            ServerSide(
+              
+            ).closeServer();
             Navigator.pop(context);
           },
           borderRadius: BorderRadius.circular(36),
@@ -113,6 +124,7 @@ class _QrGenerateState extends State<QrGenerate> {
 
   @override
   Widget build(BuildContext context) {
+    int port = ref.watch(portProvider);
     Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
@@ -123,11 +135,11 @@ class _QrGenerateState extends State<QrGenerate> {
             height: 8,
           ),
           QrImageView(
-            data: 'http://${widget.ipAddress}:${widget.port}/getFile',
+            data: 'http://${widget.ipAddress}:$port/getFile',
             version: QrVersions.auto,
             size: 180.0,
           ),
-          content(size)
+          content(size, port)
         ],
       ),
     );

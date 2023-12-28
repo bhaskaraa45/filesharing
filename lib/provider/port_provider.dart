@@ -1,0 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final portProvider = StateProvider<int>((ref) => 8080);
+final serverProvider = StateProvider<HttpServer?>((ref) => null);

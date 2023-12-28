@@ -1,17 +1,19 @@
 import 'package:filesharing/colors.dart';
+import 'package:filesharing/provider/port_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AfterScanSheet extends StatefulWidget {
+class AfterScanSheet extends ConsumerStatefulWidget {
   const AfterScanSheet({super.key, required this.url});
   final String url;
 
   @override
-  State<AfterScanSheet> createState() => _AfterScanSheetState();
+  ConsumerState<AfterScanSheet> createState() => _AfterScanSheetState();
 }
 
-class _AfterScanSheetState extends State<AfterScanSheet> {
+class _AfterScanSheetState extends ConsumerState<AfterScanSheet> {
   String getIpAddress(String url) {
     Uri uri = Uri.parse(url);
     String ipAddress = uri.host;
@@ -23,7 +25,7 @@ class _AfterScanSheetState extends State<AfterScanSheet> {
     if (uri.hasPort) {
       return uri.port;
     }
-    return 8080;
+    return ref.watch(portProvider);
   }
 
   void openTheUrl() async{
