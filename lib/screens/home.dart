@@ -374,7 +374,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           enableDrag: false,
                                           context: context,
                                           builder: (ctx) => const WebGetSheet());
-                                    } else if (Platform.isAndroid ||
+                                    } else if (Platform.isAndroid || Platform.isLinux ||
                                         Platform.isIOS) {
                                       Navigator.push(
                                           context,

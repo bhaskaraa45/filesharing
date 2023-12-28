@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:filesharing/colors.dart';
 import 'package:filesharing/screens/after_scan.dart';
+import 'package:filesharing/screens/web_get.dart';
 import 'package:filesharing/widgets/overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -39,7 +40,15 @@ class _ScannerState extends State<Scanner> {
               onDetect: _foundBarcode,
             ),
             QRScannerOverlay(
-                overlayColour: MyColors().textColor.withOpacity(0.5))
+                onTap: () {
+                  Navigator.pop(context);
+                  showModalBottomSheet(
+                      isDismissible: false,
+                      enableDrag: false,
+                      context: context,
+                      builder: (ctx) => const WebGetSheet());
+                },
+                overlayColour: MyColors().textColor.withOpacity(0.35))
           ],
         ));
   }

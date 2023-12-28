@@ -2,10 +2,12 @@ import 'package:filesharing/colors.dart';
 import 'package:flutter/material.dart';
 
 class QRScannerOverlay extends StatelessWidget {
-  const QRScannerOverlay({Key? key, required this.overlayColour})
+  const QRScannerOverlay(
+      {Key? key, required this.overlayColour, required this.onTap})
       : super(key: key);
 
   final Color overlayColour;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +51,45 @@ class QRScannerOverlay extends StatelessWidget {
           child: CustomPaint(
             foregroundPainter: BorderPainter(),
             child: SizedBox(
-              width: scanArea + 25,
               height: scanArea + 25,
+              width: scanArea + 25,
             ),
           ),
         ),
+      ),
+      Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+            margin: EdgeInsets.only(top: height * 0.2 + scanArea + 12.5 + 24),
+            height: 36,
+            width: scanArea * 7 / 8,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(36),
+                color: MyColors().white_.withOpacity(0.7)),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onTap,
+                borderRadius: BorderRadius.circular(36),
+                child: Center(
+                    child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.keyboard_alt_outlined),
+                    const SizedBox(
+                      width: 6,
+                    ),
+                    Text(
+                      'Type Manually',
+                      style: TextStyle(
+                        color: MyColors().textColor,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                )),
+              ),
+            )),
       ),
     ]);
   }
