@@ -103,16 +103,7 @@ class _AfterScanSheetState extends ConsumerState<AfterScanSheet> {
         child: InkWell(
           onTap: () {
             openTheUrl();
-            // Navigator.pop(context);
-            // showModalBottomSheet(
-            //   enableDrag: false,
-            //   isDismissible: false,
-            //     context: context,
-            //     builder: (context) {
-            //       return QrGenerate(
-            //         ipAddress: ipAddress,
-            //       );
-            //     });
+            Navigator.pop(context);
           },
           borderRadius: BorderRadius.circular(36),
           child: Center(

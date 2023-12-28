@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:filesharing/screens/qr_scanner.dart';
 import 'package:filesharing/screens/qr_scanner.dart';
 import 'package:filesharing/screens/send.dart';
+import 'package:filesharing/screens/web_get.dart';
 import 'package:filesharing/serivce/web_picker.dart';
 import 'package:filesharing/server/client_side.dart';
 import 'package:filesharing/server/server_side.dart';
@@ -366,11 +367,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   onTap: () {
                                     // ClientSide().connectToServer(
                                     //     '192.168.189.167', 8000);
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (ctx) => WebGetSheet());
 
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (ctx) => Scanner()));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (ctx) => Scanner()));
                                   },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
