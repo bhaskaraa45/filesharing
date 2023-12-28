@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:io';
+import 'package:filesharing/provider/port_provider.dart';
 import 'package:filesharing/screens/qr_scanner.dart';
 import 'package:filesharing/screens/qr_scanner.dart';
 import 'package:filesharing/screens/send.dart';
@@ -209,6 +210,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    String userName = ref.watch(usernameProvider) ?? 'User';
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -263,7 +265,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             fontSize: 28, color: MyColors().textColor),
                         children: <TextSpan>[
                       TextSpan(
-                        text: "Bhaskar Mandal",
+                        text: userName,
                         style: TextStyle(
                             fontSize: 32,
                             color: MyColors().textColor,

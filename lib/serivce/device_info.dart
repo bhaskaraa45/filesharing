@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 class DeviceInfo {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
-  Future<dynamic> initPlatformState() async {
+  Future<Map<String, dynamic>> initPlatformState() async {
     var deviceData = <String, dynamic>{};
 
     try {
@@ -39,51 +39,44 @@ class DeviceInfo {
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
     return <String, dynamic>{
-      'brand': build.brand,
-      'device': build.device,
-      'model': build.model,
+      'brand': '${build.brand}-${build.device}',
+      'id': build.model,
     };
   }
 
   Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
     return <String, dynamic>{
-      'name': data.name,
-      'systemName': data.systemName,
-      'systemVersion': data.systemVersion,
-      'model': data.model,
+      'name': '${data.name}-${data.systemName}',
+      'id': data.systemVersion,
+      // 'model': data.model,
     };
   }
 
   Map<String, dynamic> _readLinuxDeviceInfo(LinuxDeviceInfo data) {
     return <String, dynamic>{
-      'name': data.name,
-      'version': data.version,
-      'machineId': data.machineId,
+      'name': '${data.name}-${data.version}',
+      'id': data.machineId,
     };
   }
 
   Map<String, dynamic> _readWebBrowserInfo(WebBrowserInfo data) {
     return <String, dynamic>{
-      'browserName': describeEnum(data.browserName),
-      'appCodeName': data.appCodeName,
-      'appName': data.appName,
-      'platform': data.platform,
+      'name': '${describeEnum(data.browserName)}-${data.platform}',
+      'id': data.appName,
     };
   }
 
   Map<String, dynamic> _readMacOsDeviceInfo(MacOsDeviceInfo data) {
     return <String, dynamic>{
-      'computerName': data.computerName,
-      'hostName': data.hostName,
-      'systemGUID': data.systemGUID,
+      'name': '${data.computerName}-${data.hostName}',
+      'id': data.systemGUID,
     };
   }
 
   Map<String, dynamic> _readWindowsDeviceInfo(WindowsDeviceInfo data) {
     return <String, dynamic>{
-      'computerName': data.computerName,
-      'userName': data.userName,
-      'deviceId': data.deviceId,
+      'name': '${data.computerName}-${data.userName}',
+      'id': data.deviceId,
     };
   }
 }

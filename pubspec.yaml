@@ -51,6 +51,7 @@ dependencies:
   mobile_scanner: ^3.5.5
   vibration: ^1.8.4
   flutter_launcher_icons: ^0.13.1
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
