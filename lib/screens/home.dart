@@ -248,8 +248,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: SvgIcon(
-                          'assets/icons/search-normal.svg',
-                          size: 25,
+                          'assets/icons/User.svg',
+                          size: 32,
                         ),
                       ),
                     ),
