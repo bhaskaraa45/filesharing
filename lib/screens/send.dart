@@ -10,16 +10,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:marquee/marquee.dart';
 import 'package:path/path.dart';
 
-class SendScreen extends ConsumerStatefulWidget {
-  const SendScreen({super.key, required this.file, required this.width});
+class SendScreen extends StatefulWidget {
+  const SendScreen({super.key, required this.file, required this.width,required this.ref});
   final File file;
   final double width;
+  final WidgetRef ref;
 
   @override
-  ConsumerState<SendScreen> createState() => _SendScreenState();
+  State<SendScreen> createState() => _SendScreenState();
 }
 
-class _SendScreenState extends ConsumerState<SendScreen> {
+class _SendScreenState extends State<SendScreen> {
   String fileLength = '0 B';
   String ipAddress = 'localhost';
 
@@ -38,7 +39,7 @@ class _SendScreenState extends ConsumerState<SendScreen> {
   }
 
   Widget sendButton(Size size, BuildContext context) {
-    int port = ref.watch(portProvider);
+    int port = widget.ref.watch(portProvider);
     return Container(
       width: size.width * 0.4 > 280 ? 280 : size.width * 0.4,
       // height: size.width*0.15 ,
@@ -50,7 +51,9 @@ class _SendScreenState extends ConsumerState<SendScreen> {
         child: InkWell(
           onTap: () {
             Navigator.pop(context);
-            ServerSide().hostServer( widget.file.path, port);
+            widget.ref.read(filePathProvider.notifier).state = widget.file.path;
+
+            ServerSide(widget.ref).hostServer( port);
             showModalBottomSheet(
                 enableDrag: false,
                 isDismissible: false,

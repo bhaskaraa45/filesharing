@@ -1,12 +1,16 @@
 import 'dart:io';
 
+import 'package:filesharing/provider/port_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ServerSide {
   HttpServer? server; // Add a reference to the server instance
+  WidgetRef ref;
+  ServerSide(this.ref);
 
-  void hostServer(String filePath, int port) async {
-    await closeServer(); // Close the existing server if it exists
+  void hostServer(int port) async {
+    await closeServer();
 
     String ipAddress = "0.0.0.0";
 
@@ -15,20 +19,20 @@ class ServerSide {
     print("Local server is running on http://$ipAddress:$port");
 
     await for (HttpRequest request in server!) {
-      handleRequest(request, filePath);
+      handleRequest(request);
     }
   }
 
-  void handleRequest(HttpRequest request, String filePath) {
+  void handleRequest(HttpRequest request) {
     try {
       if (request.method == 'GET') {
         if (request.uri.path == '/getFile') {
-          serveFile(request, filePath);
+          serveFile(request);
         } else {
           // Handle other types of requests as needed
           request.response
             ..statusCode = HttpStatus.notFound
-            ..write('Not Found')
+            ..write('Endpoint Not Found, please recheck it')
             ..close();
         }
       } else {
@@ -42,7 +46,9 @@ class ServerSide {
     }
   }
 
-  void serveFile(HttpRequest request, String filePath) async {
+  void serveFile(HttpRequest request) async {
+    String filePath = ref.watch(filePathProvider) ?? '';
+    print('server will send this file: $filePath');
     File fileToServe = File(filePath);
 
     if (fileToServe.existsSync()) {

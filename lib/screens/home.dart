@@ -80,6 +80,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           context: context,
           builder: (context) {
             return SendScreen(
+              ref: ref,
               width: MediaQuery.of(context).size.width,
               file: selectedFile ?? File(''),
             );
@@ -365,9 +366,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   onTap: () {
                                     // ClientSide().connectToServer(
                                     //     '192.168.189.167', 8000);
-                                    
 
-                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> Scanner() ));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (ctx) => Scanner()));
                                   },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(

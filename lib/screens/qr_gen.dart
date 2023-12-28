@@ -104,7 +104,7 @@ class _QrGenerateState extends ConsumerState<QrGenerate> {
           onTap: () {
             //TODO:close server
             ServerSide(
-              
+              ref
             ).closeServer();
             Navigator.pop(context);
           },
