@@ -365,16 +365,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
+                                    print('RECEIVED CLICKED');
+                                    if (kIsWeb) {
+                                      showModalBottomSheet(
+                                          isDismissible: false,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (ctx) => const WebGetSheet());
+                                    } else if (Platform.isAndroid ||
+                                        Platform.isIOS) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (ctx) => const Scanner()));
+                                    } else {
+                                      showModalBottomSheet(
+                                          isDismissible: false,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (ctx) => const WebGetSheet());
+                                    }
+
                                     // ClientSide().connectToServer(
                                     //     '192.168.189.167', 8000);
-                                    showModalBottomSheet(
-                                        context: context,
-                                        builder: (ctx) => WebGetSheet());
-
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (ctx) => Scanner()));
+                                    //
                                   },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
