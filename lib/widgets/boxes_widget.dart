@@ -53,7 +53,7 @@ class Boxes extends StatelessWidget {
                     child: Icon(
                       icon,
                       color: MyColors().white_,
-                      size: size.width * 0.1,
+                      size: size.width * 0.09,
                     )),
                 SizedBox(
                   width: size.width * 0.02,

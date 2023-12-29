@@ -58,7 +58,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           selectedFile = file;
           isFileSelected = true;
         });
-        print(file);
       } else {
         // User canceled the picker
         setState(() {
@@ -68,7 +67,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       }
     } finally {
       // Close the progress indicator dialog
-      Navigator.of(context).pop();
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     }
 
     // Continue with the rest of your logic
@@ -91,29 +92,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> pickMultipleFilesWithSpecificType(FileType type) async {
-    Permission.storage.request();
-
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: false, type: type);
-    if (result != null) {
-      // List<File> files = result.paths.map((path) => File(path!)).toList();
-      // setState(() {
-      //   selectedFiles = files;
-      //   isFileSelected = true;
-      // });
-      // print(files);
-      File file = File(result.files.single.path!);
-      setState(() {
-        selectedFile = file;
-        isFileSelected = true;
-      });
-      print(file);
-    } else {
-      // User canceled the picker
-      setState(() {
-        selectedFile = null;
-        isFileSelected = false;
-      });
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      barrierDismissible: false,
+    );
+    try {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(allowMultiple: false, type: type);
+      if (result != null) {
+        File file = File(result.files.single.path!);
+        setState(() {
+          selectedFile = file;
+          isFileSelected = true;
+        });
+      } else {
+        // User canceled the picker
+        setState(() {
+          selectedFile = null;
+          isFileSelected = false;
+        });
+      }
+    } finally {
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     }
 
     showSendModal();
@@ -133,9 +138,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ];
   List<IconData> icons = [
     Icons.play_arrow,
-    Icons.play_arrow,
-    Icons.play_arrow,
-    Icons.play_arrow,
+    Icons.music_note,
+    Icons.image,
+    Icons.file_present_rounded,
   ];
   List<String> titles = ['Videos', 'Music', "Images", 'Files'];
 
@@ -195,16 +200,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     //TODO:fix this
 
     // if (await canLaunchUrlString('http://localhost:8888')) {
-    launchUrlString('http://localhost:8888');
+    launchUrlString('http://fileshare-aa45.netlify.app');
     // } else {
     // print('cannot open localhost:8888');
     // }
   }
 
-  Widget showImage() {
-    return Image.file(File(
-        '/data/user/0/com.aa45.filesharing.filesharing/app_flutter/celluloid-shot0003.jpg'));
-  }
+  // Widget showImage() {
+  //   return Image.file(File(
+  //       '/data/user/0/com.aa45.filesharing.filesharing/app_flutter/celluloid-shot0003.jpg'));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -323,26 +328,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
-                                    // ServerSide().hostServer(
-                                    //   '/data/user/0/com.aa45.filesharing.filesharing/app_flutter/celluloid-shot0003.jpg'
-                                    //   // '/home/bhaskar/Desktop/harry-potter/Harry Potter and the Sorcerer\'s Stone (2001) Ult. Extended 1080p 10bit Bluray x265 HEVC [Org DD 2.0 Hindi + DD 5.1 English] ESub ~ TombDoc(1).mkv'
-                                    // );
                                     pickFiles();
-                                    // isFileSelected? : null;
                                   },
-                                  // pickFiles,
-                                  // if (kIsWeb) {
-                                  //   print('WEB');
-                                  //   List<html.File> files =
-                                  //       await WebPicker().pickFiles();
-                                  //   setState(() {
-                                  //     selectedFilesWeb = files;
-                                  //   });
-                                  // } else {
-                                  //   print('NOT WEB');
-                                  //   pickMultipleFiles();
-                                  // }
-
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
                                     child: Text(
@@ -367,25 +354,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
-                                    print('RECEIVED CLICKED');
                                     if (kIsWeb) {
                                       showModalBottomSheet(
                                           isDismissible: false,
                                           enableDrag: false,
                                           context: context,
-                                          builder: (ctx) => const WebGetSheet());
-                                    } else if (Platform.isAndroid || Platform.isLinux ||
+                                          builder: (ctx) =>
+                                              const WebGetSheet());
+                                    } else if (Platform.isAndroid ||
                                         Platform.isIOS) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (ctx) => const Scanner()));
+                                              builder: (ctx) =>
+                                                  const Scanner()));
                                     } else {
                                       showModalBottomSheet(
                                           isDismissible: false,
                                           enableDrag: false,
                                           context: context,
-                                          builder: (ctx) => const WebGetSheet());
+                                          builder: (ctx) =>
+                                              const WebGetSheet());
                                     }
 
                                     // ClientSide().connectToServer(
