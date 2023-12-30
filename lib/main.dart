@@ -48,7 +48,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     } else {
       String defaultName = await getDeviceDetails();
       if (defaultName == 'null') {
-        String ip = WifiInfo().getIpV4Address();
+        String ip = await WifiInfo().getIpV4Address();
         // setState(() {
           defaultName = 'User-$ip';
         // });

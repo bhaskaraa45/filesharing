@@ -169,49 +169,47 @@ class _SendScreenState extends State<SendScreen> {
   }
 
   Widget textWidget(String text, Size size) {
-    return Expanded(
-      child: LayoutBuilder(builder: (context, constraints) {
-        // Check if the text overflows
-        bool textOverflows = _doesTextOverflow(
-            text,
-            TextStyle(
-                color: MyColors().textColor,
-                fontSize: size.width * 0.048 > 42 ? 42 : size.width * 0.048,
-                fontWeight: FontWeight.w400),
-            constraints.maxWidth);
+    return LayoutBuilder(builder: (context, constraints) {
+      // Check if the text overflows
+      bool textOverflows = _doesTextOverflow(
+          text,
+          TextStyle(
+              color: MyColors().textColor,
+              fontSize: size.width * 0.048 > 42 ? 42 : size.width * 0.048,
+              fontWeight: FontWeight.w400),
+          constraints.maxWidth);
 
-        return textOverflows
-            ? Marquee(
-                text: text,
-                style: TextStyle(
-                    color: MyColors().textColor,
-                    // fontSize: size.width * 0.048,
-                    fontSize: size.width * 0.048 > 42 ? 42 : size.width * 0.048,
-                    fontWeight: FontWeight.w400),
-                scrollAxis: Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                blankSpace: 30.0,
-                velocity: 50,
-                pauseAfterRound: const Duration(seconds: 1),
-                startPadding: 20.0,
-                accelerationDuration: const Duration(milliseconds: 1),
-                accelerationCurve: Curves.linear,
-                decelerationDuration: const Duration(milliseconds: 500),
-                decelerationCurve: Curves.easeOut,
-              )
-            : Container(
-                alignment: Alignment.topLeft,
-                child: Text(text,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: MyColors().textColor,
-                        fontSize:
-                            size.width * 0.048 > 42 ? 42 : size.width * 0.048,
-                        fontWeight: FontWeight.w400)),
-              );
-      }),
-    );
+      return textOverflows
+          ? Marquee(
+              text: text,
+              style: TextStyle(
+                  color: MyColors().textColor,
+                  // fontSize: size.width * 0.048,
+                  fontSize: size.width * 0.048 > 42 ? 42 : size.width * 0.048,
+                  fontWeight: FontWeight.w400),
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              blankSpace: 30.0,
+              velocity: 50,
+              pauseAfterRound: const Duration(seconds: 1),
+              startPadding: 20.0,
+              accelerationDuration: const Duration(milliseconds: 1),
+              accelerationCurve: Curves.linear,
+              decelerationDuration: const Duration(milliseconds: 500),
+              decelerationCurve: Curves.easeOut,
+            )
+          : Container(
+              alignment: Alignment.topLeft,
+              child: Text(text,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: MyColors().textColor,
+                      fontSize:
+                          size.width * 0.048 > 42 ? 42 : size.width * 0.048,
+                      fontWeight: FontWeight.w400)),
+            );
+    });
   }
 
   Widget itemCard(File file, Size size) {
