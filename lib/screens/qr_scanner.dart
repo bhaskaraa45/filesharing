@@ -6,7 +6,6 @@ import 'package:filesharing/screens/web_get.dart';
 import 'package:filesharing/widgets/overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:vibration/vibration.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);

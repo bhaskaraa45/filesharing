@@ -7,7 +7,6 @@ import 'package:filesharing/screens/qr_scanner.dart';
 import 'package:filesharing/screens/send.dart';
 import 'package:filesharing/screens/web_get.dart';
 import 'package:filesharing/serivce/web_picker.dart';
-import 'package:filesharing/server/client_side.dart';
 import 'package:filesharing/server/server_side.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:vibration/vibration.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

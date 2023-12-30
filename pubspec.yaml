@@ -42,15 +42,11 @@ dependencies:
   permission_handler: ^11.0.1
   universal_html: ^2.2.4
   http: ^1.1.0
-  path: ^1.8.3
-  path_provider: ^2.1.1
   marquee: ^2.2.3
   qr_flutter: ^4.1.0
   network_info_plus: ^4.1.0
   flutter_riverpod: ^2.4.9
   mobile_scanner: ^3.5.5
-  vibration: ^1.8.4
-  flutter_launcher_icons: ^0.13.1
   shared_preferences: ^2.2.2
 
 dev_dependencies:
@@ -64,23 +60,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/logo.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-  web:
-    generate: true
-    image_path: "assets/logo.png"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
-  windows:
-    generate: true
-    image_path: "assets/logo.png"
-    icon_size: 48 # min:48, max:256, default: 48
-  macos:
-    generate: true
-    image_path: "assets/logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
