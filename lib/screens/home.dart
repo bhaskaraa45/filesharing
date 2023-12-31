@@ -145,10 +145,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> pickVideos() async {
     // print('Hello World!');
     if (kIsWeb) {
-      List<html.File> files = await webPicker.pickVideos();
-      setState(() {
-        selectedFilesWeb = files;
-      });
+      // List<html.File> files = await webPicker.pickVideos();
+      // setState(() {
+      //   selectedFilesWeb = files;
+      // });
+      showCannotSendThroughWeb();
     } else {
       await pickMultipleFilesWithSpecificType(FileType.video);
     }
@@ -156,10 +157,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> pickMusic() async {
     if (kIsWeb) {
-      List<html.File> files = await webPicker.pickMusic();
-      setState(() {
-        selectedFilesWeb = files;
-      });
+      // List<html.File> files = await webPicker.pickMusic();
+      // setState(() {
+      //   selectedFilesWeb = files;
+      // });
+      showCannotSendThroughWeb();
     } else {
       await pickMultipleFilesWithSpecificType(FileType.audio);
     }
@@ -167,10 +169,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> pickImages() async {
     if (kIsWeb) {
-      List<html.File> files = await webPicker.pickImages();
-      setState(() {
-        selectedFilesWeb = files;
-      });
+      // List<html.File> files = await webPicker.pickImages();
+      // setState(() {
+      //   selectedFilesWeb = files;
+      // });
+      showCannotSendThroughWeb();
     } else {
       await pickMultipleFilesWithSpecificType(FileType.image);
     }
@@ -178,10 +181,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> pickFiles() async {
     if (kIsWeb) {
-      List<html.File> files = await webPicker.pickFiles();
-      setState(() {
-        selectedFilesWeb = files;
-      });
+      // List<html.File> files = await webPicker.pickFiles();
+      // setState(() {
+      //   selectedFilesWeb = files;
+      // });
+      showCannotSendThroughWeb();
     } else {
       await pickMultipleFiles(context);
     }
@@ -195,19 +199,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool isLinkClicked = false;
 
   openBrowser() async {
-    //TODO:fix this
-
-    // if (await canLaunchUrlString('http://localhost:8888')) {
     launchUrlString('http://fileshare-aa45.netlify.app');
-    // } else {
-    // print('cannot open localhost:8888');
-    // }
   }
 
-  // Widget showImage() {
-  //   return Image.file(File(
-  //       '/data/user/0/com.aa45.filesharing.filesharing/app_flutter/celluloid-shot0003.jpg'));
-  // }
+  showCannotSendThroughWeb() {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text(
+                'File Share Notice',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, color: MyColors().textColor),
+              ),
+              content: RichText(
+                  text: TextSpan(
+                      text:
+                          'You can receive files through the website. However,',
+                      style:
+                          TextStyle(fontSize: 16, color: MyColors().textColor),
+                      children: [
+                    TextSpan(
+                      text:
+                          ' to send files, please download our mobile or desktop apps.',
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: MyColors().primary,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.italic),
+                    ),
+                    TextSpan(
+                      text: ' Thank you!',
+                      style:
+                          TextStyle(fontSize: 16, color: MyColors().textColor),
+                    ),
+                  ])),
+              actions: [
+                TextButton(onPressed: () {
+                  Navigator.pop(context);
+                }, child: const Text('Close')),
+                TextButton(onPressed: () {
+                  //TODO: add download link according to platform
+                }, child: Text('Download'),),
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -326,7 +361,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 color: Colors.transparent,
                                 child: InkWell(
                                   onTap: () {
-                                    pickFiles();
+                                    if (kIsWeb) {
+                                      showCannotSendThroughWeb();
+                                    } else {
+                                      pickFiles();
+                                    }
                                   },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(
@@ -374,10 +413,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           builder: (ctx) =>
                                               const WebGetSheet());
                                     }
-
-                                    // ClientSide().connectToServer(
-                                    //     '192.168.189.167', 8000);
-                                    //
                                   },
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Center(

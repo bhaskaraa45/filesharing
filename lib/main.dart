@@ -3,6 +3,7 @@ import 'package:filesharing/screens/home.dart';
 import 'package:filesharing/serivce/clear_cache.dart';
 import 'package:filesharing/serivce/device_info.dart';
 import 'package:filesharing/server/wifi_info.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     super.initState();
     // permission();
     getName();
+
     ClearCachedFiles().clearCachedFiles();
   }
 
@@ -39,6 +41,12 @@ class _MyAppState extends ConsumerState<MyApp> {
   //   }
   // }
   getName() async {
+    String webname = await getDeviceDetails();
+
+    print("USER NAME : $webname");
+    if (kIsWeb) {
+      ref.read(usernameProvider.notifier).state = webname;
+    }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('name');
 
@@ -49,11 +57,11 @@ class _MyAppState extends ConsumerState<MyApp> {
       if (defaultName == 'null') {
         String ip = await WifiInfo().getIpV4Address();
         // setState(() {
-          defaultName = 'User-$ip';
+        defaultName = 'user-$ip';
         // });
       }
       ref.read(usernameProvider.notifier).state = defaultName;
-      await prefs.setString('name', defaultName);
+      // await prefs.setString('name', defaultName);
     }
   }
 
