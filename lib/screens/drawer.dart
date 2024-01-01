@@ -1,6 +1,7 @@
 import 'package:filesharing/colors.dart';
 import 'package:filesharing/provider/port_provider.dart';
 import 'package:filesharing/server/wifi_info.dart';
+import 'package:filesharing/widgets/change_port.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +31,8 @@ class _SideDrawerState extends ConsumerState<SideDrawer> {
   @override
   Widget build(BuildContext context) {
     String name = ref.watch(usernameProvider) ?? 'User';
+    int port = ref.watch(portProvider);
+    List<int> options = ref.read(portOtp);
     return SafeArea(
         child: Drawer(
       child: Column(
@@ -47,6 +50,32 @@ class _SideDrawerState extends ConsumerState<SideDrawer> {
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w300),
               )),
+          InkWell(
+            onTap: (){
+              // Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ChangePort(ports: options)));
+              showDialog(context: context, builder: (ctx)=> ChangePort(ports: options,currentPort: port,));
+            },
+            child: ListTile(
+              leading: const Icon(Icons.lan_outlined),
+              title: RichText(
+                text: TextSpan(
+                    text: 'Current Port: ',
+                    style: TextStyle(
+                      color: MyColors().textColor,
+                      fontSize: 18,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '$port',
+                        style: TextStyle(
+                            color: MyColors().textColor,
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic),
+                      ),
+                    ]),
+              ),
+            ),
+          )
         ],
       ),
     ));

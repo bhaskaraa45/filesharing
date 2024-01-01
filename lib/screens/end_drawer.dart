@@ -38,13 +38,35 @@ class _EndDrawerState extends ConsumerState<EndDrawer> {
     Size size = MediaQuery.of(context).size;
     return AlertDialog(
       backgroundColor: MyColors().primary,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
+      content: Stack(
+        alignment: Alignment.topRight,
         children: [
-          SizedBox(
-              height: size.height * 0.25,
-              width: double.infinity,
-              child: Center(child: userDetails(name, size)))
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              borderRadius: BorderRadius.circular(42),
+              child: Container(
+                height: 28,
+                width: 28,
+                decoration: BoxDecoration(
+                    color: MyColors().white_,
+                    borderRadius: BorderRadius.circular(42)),
+                child: const Icon(Icons.close),
+              ),
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                  height: size.height * 0.25,
+                  width: double.infinity,
+                  child: Center(child: userDetails(name, size)))
+            ],
+          ),
         ],
       ),
     );
@@ -158,6 +180,9 @@ class _EndDrawerState extends ConsumerState<EndDrawer> {
         context: context,
         builder: (ctx) {
           return AlertDialog(
+            title: Container(
+              height: 8,
+            ),
             backgroundColor: MyColors().primary,
             content: content(size, controller),
             actions: [
