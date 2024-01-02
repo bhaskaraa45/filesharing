@@ -2,6 +2,7 @@ import 'package:filesharing/colors.dart';
 import 'package:filesharing/provider/port_provider.dart';
 import 'package:filesharing/server/wifi_info.dart';
 import 'package:filesharing/widgets/change_port.dart';
+import 'package:filesharing/widgets/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,32 +51,93 @@ class _SideDrawerState extends ConsumerState<SideDrawer> {
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w300),
               )),
-          InkWell(
-            onTap: (){
+          ListTile(
+            onTap: () {
               // Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ChangePort(ports: options)));
-              showDialog(context: context, builder: (ctx)=> ChangePort(ports: options,currentPort: port,));
+              showDialog(
+                  context: context,
+                  builder: (ctx) => ChangePort(
+                        ports: options,
+                        currentPort: port,
+                      ));
             },
-            child: ListTile(
-              leading: const Icon(Icons.lan_outlined),
-              title: RichText(
-                text: TextSpan(
-                    text: 'Current Port: ',
-                    style: TextStyle(
+            leading: const Icon(Icons.lan),
+            title: RichText(
+              text: TextSpan(
+                  text: 'Current Port: ',
+                  style: TextStyle(
                       color: MyColors().textColor,
                       fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                  children: [
+                    TextSpan(
+                      text: '$port',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: MyColors().textColor,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic),
                     ),
-                    children: [
-                      TextSpan(
-                        text: '$port',
-                        style: TextStyle(
-                            color: MyColors().textColor,
-                            fontSize: 18,
-                            fontStyle: FontStyle.italic),
-                      ),
-                    ]),
+                  ]),
+            ),
+          ),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.share),
+            title: RichText(
+              text: TextSpan(
+                text: 'Share',
+                style: TextStyle(
+                    color: MyColors().textColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500),
               ),
             ),
-          )
+          ),
+          ListTile(
+            onTap: () {
+              showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (ctx) => const GiveFeedback());
+            },
+            leading: const Icon(Icons.feedback),
+            title: RichText(
+              text: TextSpan(
+                text: 'Give Feedback',
+                style: TextStyle(
+                    color: MyColors().textColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+          // ListTile(
+          //   onTap: () {},
+          //   leading: const Icon(Icons.bug_report),
+          //   title: RichText(
+          //     text: TextSpan(
+          //       text: 'Report a bug',
+          //       style: TextStyle(
+          //           color: MyColors().textColor,
+          //           fontSize: 18,
+          //           fontWeight: FontWeight.w500),
+          //     ),
+          //   ),
+          // ),
+          ListTile(
+            onTap: () {},
+            leading: const Icon(Icons.help),
+            title: RichText(
+              text: TextSpan(
+                text: 'About Us',
+                style: TextStyle(
+                    color: MyColors().textColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
         ],
       ),
     ));
